@@ -6,7 +6,7 @@ const router = express.Router()
 // used to get a logged in user
 // private access
 router.get('/', (req,res)=>{
-    res.send('get the logged in user')
+    res.send(`get the logged in user`)
 })
 
 // post
