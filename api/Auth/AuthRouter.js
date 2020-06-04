@@ -12,6 +12,7 @@ const Authware = require("../Middleware/Auth.js")
 // get
 // used to get a logged in user
 // private access
+//////////////////////////////////////alter route to check param===token.id
 router.get('/', Authware, async (req,res)=>{
 
 
