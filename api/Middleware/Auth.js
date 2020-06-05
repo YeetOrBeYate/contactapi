@@ -19,6 +19,8 @@ module.exports = (req,res,next)=>{
             if(decoded.user.id === Userid){
                 // console.log('will advance')
                 next()
+            }else{
+                res.status(401).json({message:'Userid and token do not match'})
             }
         }
     })

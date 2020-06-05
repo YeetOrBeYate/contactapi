@@ -12,12 +12,12 @@ const router = express.Router()
 //////////////////////////////////////alter route to check param===token.id
 router.get('/:Userid', AuthMiddle, async (req,res)=>{
 
-    let id = req.user.id
+
     let Userid = req.params.Userid
 
     try{
 
-        let contacts = await ContactModel.find({user:id}).sort({date:-1})
+        let contacts = await ContactModel.find({user:Userid}).sort({date:-1})
         
         return res.status(200).json({contacts})
         
@@ -87,7 +87,7 @@ router.put('/:Userid/:id', AuthMiddle, async(req,res)=>{
             return res.status(404).json({message:'contact not found'})
         }
         //checking to see if the user actually owns the contact
-        if(contact.user.toString()!== req.user.id){
+        if(contact.user.toString()!== Userid){
             return res.status(401).json({message:'hacker!'})
         }
 
@@ -110,6 +110,7 @@ router.delete('/:Userid/:id', AuthMiddle, async (req,res)=>{
 
     let id = req.params.id
     let Userid = req.params.Userid
+    
 
     try{
         //see if contact exists
@@ -118,7 +119,7 @@ router.delete('/:Userid/:id', AuthMiddle, async (req,res)=>{
             return res.status(404).json({message:'contact not found'})
         }
         //see if we own it
-        if(contact.user.toString()!== req.user.id){
+        if(contact.user.toString()!== Userid){
             return res.status(401).json({message:'hacker!'})
         }
 
