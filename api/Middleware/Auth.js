@@ -2,10 +2,11 @@ const jwt = require("jsonwebtoken");
 const config = require('config');
 
 module.exports = (req,res,next)=>{
+    let Userid = req.params.Userid
     const token = req.header('authorization')
 
-    if(!token){
-       return res.status(417).json({message:"Token not found"}) 
+    if(!token || !Userid){
+       return res.status(417).json({message:"Token or Userid not found"}) 
     }
 
     jwt.verify(token, config.get('jwtSecret'), function(err,decoded){
@@ -14,7 +15,11 @@ module.exports = (req,res,next)=>{
             return res.status(417).json({message:'Token is invalid'})
         }else{
             req.user = decoded.user
-            next()
+            // console.log(decoded.user.id, "===", Userid)
+            if(decoded.user.id === Userid){
+                // console.log('will advance')
+                next()
+            }
         }
     })
 }

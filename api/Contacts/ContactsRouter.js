@@ -10,9 +10,10 @@ const router = express.Router()
 // get all contacts per user
 // private access
 //////////////////////////////////////alter route to check param===token.id
-router.get('/', AuthMiddle, async (req,res)=>{
+router.get('/:Userid', AuthMiddle, async (req,res)=>{
 
     let id = req.user.id
+    let Userid = req.params.Userid
 
     try{
 
@@ -30,7 +31,7 @@ router.get('/', AuthMiddle, async (req,res)=>{
 // add contact
 // private access
 //////////////////////////////////////alter route to check param===token.id
-router.post('/', AuthMiddle, [
+router.post('/:Userid', AuthMiddle, [
     check('name', "Please add name").not().isEmpty(),
     check('email','Please add email').isEmail()
 ], async (req,res)=>{
@@ -40,6 +41,7 @@ router.post('/', AuthMiddle, [
     }
 
     const {name, email, phone, type} = req.body
+    let Userid = req.params.Userid
 
     try{
         const newContact = new ContactModel({
@@ -47,7 +49,7 @@ router.post('/', AuthMiddle, [
             email,
             phone,
             type,
-            user:req.user.id
+            user:Userid
         })
         //putting the saved contact in a variable to send back
         const contact = await newContact.save()
@@ -63,9 +65,10 @@ router.post('/', AuthMiddle, [
 // edit contact by contact id
 // private access
 ///////////////////////////////also add another user parameter here to avoid multiple database calls
-router.put('/:id', AuthMiddle, async(req,res)=>{
+router.put('/:Userid/:id', AuthMiddle, async(req,res)=>{
 
     let id = req.params.id
+    let Userid = req.params.Userid
     // const {name, email, phone, type} = req.body;
     let body = req.body
 
@@ -103,9 +106,10 @@ router.put('/:id', AuthMiddle, async(req,res)=>{
 // delete contact by contact id
 // private access
 ///////////////////////////////also add another user parameter here to avoid multiple database calls
-router.delete('/:id', AuthMiddle, async (req,res)=>{
+router.delete('/:Userid/:id', AuthMiddle, async (req,res)=>{
 
     let id = req.params.id
+    let Userid = req.params.Userid
 
     try{
         //see if contact exists

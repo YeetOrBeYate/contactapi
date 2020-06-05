@@ -13,14 +13,15 @@ const Authware = require("../Middleware/Auth.js")
 // used to get a logged in user
 // private access
 //////////////////////////////////////alter route to check param===token.id
-router.get('/', Authware, async (req,res)=>{
+// param will be Userid
+router.get('/:Userid', Authware, async (req,res)=>{
 
 
-    let id = req.user.id
+    let Userid = req.params.Userid
 
     try{
 
-        const user = await Usermodel.findById(id).select('-password')
+        const user = await Usermodel.findById(Userid).select('-password')
         if(!user){
             return res.status(404).json({message:'user not found'})
         }
@@ -70,7 +71,7 @@ router.post('/',[
             if (err){
                 throw err
             }else{
-                res.status(200).json({message:'login successful', token})
+                res.status(200).json({token, userid:user.id, name:user.name})
             }
         })
 
