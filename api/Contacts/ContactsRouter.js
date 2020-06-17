@@ -88,7 +88,7 @@ router.put('/:Userid/:id', AuthMiddle, async(req,res)=>{
         }
         //checking to see if the user actually owns the contact
         if(contact.user.toString()!== Userid){
-            return res.status(401).json({message:'hacker!'})
+            return res.status(401).json({message:'hacker!'})//I probably could combine this and the above conditional together but I like the two different responses
         }
 
         contact = await ContactModel.findByIdAndUpdate(id, {$set: body}, {new:true})
@@ -120,7 +120,7 @@ router.delete('/:Userid/:id', AuthMiddle, async (req,res)=>{
         }
         //see if we own it
         if(contact.user.toString()!== Userid){
-            return res.status(401).json({message:'hacker!'})
+            return res.status(401).json({message:'hacker!'})//I probably could combine this and the above conditional together but I like the two different responses
         }
 
         await ContactModel.findByIdAndRemove(id)
